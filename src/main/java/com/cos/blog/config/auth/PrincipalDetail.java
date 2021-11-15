@@ -21,7 +21,7 @@ import lombok.Getter;
     PrincipalDetail 가 저장이 될때 우리가 디비에 저장한 User 오브젝트가 포함되어 있도록 한다.
  */
 
-@Getter
+@Data
 public class PrincipalDetail implements UserDetails {
 
 	//	model이 들고있는 User 오브젝트 하나 생성

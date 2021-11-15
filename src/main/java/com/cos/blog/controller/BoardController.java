@@ -65,8 +65,6 @@ public class BoardController {
 		return "board/saveForm";
 	}
 	
-	
-	
 	/*
 	  	@PathVariable 의 쓰임새
 	  	@PathVariable로 받아온 변수 ex) @PathVariable int id
@@ -78,10 +76,18 @@ public class BoardController {
 	  	글상세보기() 메서드의 리턴타입은 Board 객체이다.
 	  	findById 매개변수로는 id 랑 Model객체가 있는데
 	 */
+	
 	@GetMapping("/board/{id}")
 	public String findById(@PathVariable int id, Model model) {
 		model.addAttribute("board",boardService.글상세보기(id));
 		return "board/detail";
+	}
+	
+	
+	@GetMapping("/board/{id}/updateForm")
+	public String updateForm(@PathVariable int id, Model model) {
+		model.addAttribute("board", boardService.글상세보기(id));
+		return "board/updateForm";
 	}
 	
 }

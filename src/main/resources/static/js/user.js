@@ -3,6 +3,9 @@ let index = {
 		$("#btn-save").on("click", ()=>{
 			this.save();
 		});
+		$("#btn-update").on("click", ()=>{
+			this.update();
+		});
 	},
 	
 	save:function(){
@@ -23,7 +26,36 @@ let index = {
 			contentType : "application/json; charset=utf-8", //body 데이터가 어떤 타입인지 (mine)
 			dataType : "json" // 요청을 서버로 해서 응답이 왔을떄 기본적으로 모든것이 문자열 (생긴게 json 이라면 => javaScript)
 		}).done(function(resp){
-			alert("회원가입이 완료 되었습니다.");
+		
+			if(resp.status === 500){
+				alert("회원가입에 싶래하였습니다.");
+			}else{
+				alert("회원가입이 완료 되었습니다.");
+				location.href = "/";
+			}		
+			console.log("resp =========="+resp);
+		}).fail(function(error){
+			alert(JSON.stringify(error));
+		});
+		
+	},
+	
+	update:function(){
+		let data = {
+			id: $("#id").val(),
+			username: $("#username").val(),
+			password: $("#password").val(),
+			email : $("#email").val()
+		};
+		
+		$.ajax({
+			type : "PUT",
+			url : "/user",
+			data : JSON.stringify(data), // http body 데이터
+			contentType : "application/json; charset=utf-8", //body 데이터가 어떤 타입인지 (mine)
+			dataType : "json" // 요청을 서버로 해서 응답이 왔을떄 기본적으로 모든것이 문자열 (생긴게 json 이라면 => javaScript)
+		}).done(function(resp){
+			alert("회원수정이 완료 되었습니다.");
 			console.log(resp);
 			location.href = "/";
 		}).fail(function(error){

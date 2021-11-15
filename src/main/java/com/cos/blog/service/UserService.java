@@ -3,6 +3,10 @@ package com.cos.blog.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +86,36 @@ public class UserService {
 	}
 	  
 	 */
+	
+	@Transactional
+	public void 회원수정(User user) {
+		User persistance = userRepository.findById(user.getId())
+				.orElseThrow(()->{
+					return new IllegalArgumentException("회원찾기실패");
+				});
+		//	Validate 체크 => oauth 필드에 값이 없으면 수정가능
+		if(persistance.getOauth() == null || persistance.getOauth().equals("")) {
+			String rawPassword = user.getPassword();
+			String encPassword = encoder.encode(rawPassword);
+			persistance.setPassword(encPassword);
+			persistance.setEmail(user.getEmail());			
+		}
+		
+		
+		// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = commit이 자동으로 된다.
+		// 영속화된 persistance 객체의 변화가 감지되면 더티체킹이 되어 update 문을 날려준다(자동으로)
+		
+	}
+	
+	
+	//orElseGet == 만약에 회원을 찾았는데 없으면 빈 객체를 리턴해라./강제로 만들어서 리턴해도됨
+	@Transactional(readOnly=true)
+	public User 회원찾기(String username) {
+		User user = userRepository.findByUsername(username).orElseGet(()->{
+			return new User();
+		});
+		return user;
+	}
 	
 	
 	

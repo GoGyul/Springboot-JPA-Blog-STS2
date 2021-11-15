@@ -10,8 +10,5 @@ import com.cos.blog.model.User;
 
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
-	 
-	
-	
-	
+
 }

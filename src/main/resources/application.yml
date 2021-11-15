@@ -31,10 +31,12 @@ spring:
 #      jpa의 기본전략을 따라가지 않겠다.(다양한 전략이 있음)
       use-new-id-generator-mappings: false
 #      콘솔창에 결과가 나온다 
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.format_sql: true
 
   jackson:
     serialization:
       fail-on-empty-beans: false
+cos:
+  key: cos1234

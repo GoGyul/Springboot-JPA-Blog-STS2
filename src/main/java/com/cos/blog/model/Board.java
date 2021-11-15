@@ -3,6 +3,7 @@ package com.cos.blog.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,9 +83,11 @@ public class Board {
 	//	reply는 연관관계의 주인이 아니다 , 데이터 베이스에 컬럼을 만들지 마라
 	//	그냥 단지 Board를  select할때 Join 문을 통해 값을 얻기 위해 필요한것.
 	//	(mappedBy = "board") board = reply클래스의 필드이름. 
-	
-	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
-	private List<Reply> reply;
+	//   CascadeType.REMOVE = board 게시글을 지울때 댓글들을 한꺼번에 다 날리겠다.
+	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"board"}) // Reply 클래스 안의 board 라는 필드의 getter를 호출하지 않겟다고 어노테이션 선언
+	@OrderBy("id desc")
+	private List<Reply> replys;
 	
 	
 	@CreationTimestamp
