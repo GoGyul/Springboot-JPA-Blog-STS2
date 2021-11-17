@@ -117,6 +117,12 @@ public class UserService {
 		return user;
 	}
 	
+	@Transactional
+	public void 회원탈퇴(int id) {
+		System.out.println("회원탈퇴() 메서드 id 값 ========"+id);
+		userRepository.deleteById(id);
+	}
+	
 	
 	
 }

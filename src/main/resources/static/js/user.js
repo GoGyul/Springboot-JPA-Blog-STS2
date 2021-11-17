@@ -48,21 +48,46 @@ let index = {
 			email : $("#email").val()
 		};
 		
-		$.ajax({
-			type : "PUT",
-			url : "/user",
-			data : JSON.stringify(data), // http body 데이터
-			contentType : "application/json; charset=utf-8", //body 데이터가 어떤 타입인지 (mine)
-			dataType : "json" // 요청을 서버로 해서 응답이 왔을떄 기본적으로 모든것이 문자열 (생긴게 json 이라면 => javaScript)
-		}).done(function(resp){
-			alert("회원수정이 완료 되었습니다.");
-			console.log(resp);
-			location.href = "/";
-		}).fail(function(error){
-			alert(JSON.stringify(error));
-		});
-		
+		if(data.password == ""){
+			alert("비밀번호의 값이 없습니다.");
+			$("#password").focus();
+			return false;
+		}else{
+			$.ajax({
+				type : "PUT",
+				url : "/user",
+				data : JSON.stringify(data), // http body 데이터
+				contentType : "application/json; charset=utf-8", //body 데이터가 어떤 타입인지 (mine)
+				dataType : "json" // 요청을 서버로 해서 응답이 왔을떄 기본적으로 모든것이 문자열 (생긴게 json 이라면 => javaScript)
+			}).done(function(resp){
+				alert("회원수정이 완료 되었습니다.");
+				console.log(resp);
+				location.href = "/";
+			}).fail(function(error){
+			    alert(JSON.stringify(error));
+			});
+		}
 	},
+	
+	withdrawal:function(userId){
+		
+		if(confirm("정말 탈퇴하겠습니까?")){
+		console.log(userId);
+		    $.ajax({
+		    	type : "DELETE",
+		    	url : "/auth/withdraw/"+userId,
+		    	contentType : "application/json; charset=utf-8",
+		    	dataType : "json"
+		    }).done(function(resp){
+		        alert("회원탈퇴가 완료 되었습니다.");	
+		        location.href = "/logout";
+		    }).fail(function(error){
+		    
+		    })
+		}else{
+			console.log("취소");
+		}
+	}
 	
 	
 	

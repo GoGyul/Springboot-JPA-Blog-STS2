@@ -15,7 +15,7 @@
     <c:if test="${empty principal.user.oauth }">
 	  <div class="form-group">
 	    <label for="password">Password</label>
-	    <input type="password" class="form-control" placeholder="Enter password" id="password">
+	    <input type="password" class="form-control" placeholder="Enter password" id="password" required>
 	  </div>
 	  
     </c:if>
@@ -26,7 +26,7 @@
     </div>
   </form>
   <button id="btn-update" class="btn btn-primary">수정완료</button>
-
+  <button onclick="index.withdrawal(${principal.user.id})" class="btn btn-primary">회원탈퇴</button>
 </div>
 
 

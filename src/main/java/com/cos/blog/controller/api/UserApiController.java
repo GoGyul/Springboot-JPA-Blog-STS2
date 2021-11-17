@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -144,6 +145,14 @@ public class UserApiController {
 		//세션등록
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+	}
+	
+	@DeleteMapping("/auth/withdraw/{userId}")
+	public ResponseDto<Integer> delete(@PathVariable int userId){
+		System.out.println("delete() 메서드 userId 값 ========"+userId);
+		userService.회원탈퇴(userId);
 		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
 	}
